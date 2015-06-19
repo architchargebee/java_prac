@@ -1,0 +1,18 @@
+git add
+git commit / git commit -m ---difference and what to use
+git push /pull
+git diff / git difftool - difference and scnario as to what will be useful and when
+git status
+bit branch / tag difference
+git status -s --what's new
+git init 
+create/display/delete a branch
+create/ push / delete origin   ----safely
+view branches / tags --- local /origin 
+Difference between fetch and pull
+git merge -- merge conflicts and how to resolve them  --- read about merge design --- how to merge two branches
+understand the working and database design of a git repository --- working structure
+git revert / amend and when to use what
+
+ 
+

@@ -1,0 +1,11 @@
+what is echo ?
+Learn basic shell scripting 
+shell variables
+what is $
+copying / moving / deleteing - forcefully, recursively
+what is cat
+Aim is not to use the file explorer - making a directory, changing a directory - searching the directory
+Basic vi commands - save and exit , save without exit etc.
+shell commands - difference between "" , '' , `` and when to use expr
+
+
