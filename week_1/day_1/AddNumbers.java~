@@ -10,6 +10,9 @@ public class AddNumbers{
 		y=Integer.parseInt(br.readLine());
 		z= x+y;
 		System.out.println("The sum of the two numbers "+x+" and "+y+" is "+z);
+		xor= x^y;
+		ior= x|y;
+		System.out.println("Xor= "+xor+" Ior= " +ior);
         	System.out.println("Hello");
 	}
 }
