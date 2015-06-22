@@ -1,0 +1,14 @@
+Learn about, why is everything a object in java
+If everything is object in java, how do I know which class is that object from
+What is .class file
+how do you get .class file from .java file?
+do you need a .java file for running the program?
+Compiler/ decompiler?
+what is the default java classpath for a java compiler
+how to change the classpath of the java compiler - and run the program from the outer directory?
+What is Interface - similaritites b/w struct and interface - how is java related to c/c+ - similarities and difference?
+Read about the good programming practices in java?
+Java camel casing
+Read the documenataion on strings and other in built parsing helps in java language - inbuilt classes ----JAVA 8 from oracle site
+
+
