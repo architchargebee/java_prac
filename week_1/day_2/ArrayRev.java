@@ -25,7 +25,7 @@ public class ArrayRev{
 		}
 		rotation=cons.readLine("Rotation left or right?(l/r)").charAt(0);
 		if (rotation  == 'l'){
-			outputArr = rotateLeft(arr);
+			outputArr = rotateLeft(arr);	
 		}
 		else{
 			outputArr= rotateRight(arr);
@@ -41,7 +41,7 @@ public class ArrayRev{
 		
 	}
 	
-	static int[][] rotateLeft(int[][] arr){
+	public static int[][] rotateLeft(int[][] arr){
 		arr= transpose(arr);
 		int j,i,k;
 		
@@ -59,7 +59,7 @@ public class ArrayRev{
 		return arr;
 	}
 
-	static int[][] rotateRight(int[][] arr){
+	public static int[][] rotateRight(int[][] arr){
 		arr = transpose(arr);
 		int j,i,k;
 		int[]  temp= new int[arr.length];
@@ -76,7 +76,7 @@ public class ArrayRev{
 		return arr;
 	}
 
-	static int[][] transpose(int[][] arr){
+	public static int[][] transpose(int[][] arr){
 		int[][] transArr= new int[arr.length][arr.length];
 		int i,j;
 		for(i=0; i< arr.length ; i++){
