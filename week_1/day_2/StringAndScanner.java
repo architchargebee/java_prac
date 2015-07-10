@@ -8,14 +8,15 @@ public class StringAndScanner{
 		int i,sum=0;
 		char a='a';
 		for(i=0;i<inpStr.length();i++){
-			sum=sum+ (int) inpStr.charAt(i) -(int) a + 1;
+			sum=sum+ (int) inpStr.charAt(i) -(int) a + 1; 
+			System.out.println(inpStr.charAt(i) + " - " +((int) inpStr.charAt(i)-(int) a + 1));
 			}
-		if(sum % 2 == 0){
+			System.out.println("sum - "+sum );
+		if(sum % 2 == 0) {
 			System.out.println("Even");
-			}
-		else{
+	 	} else {
 			System.out.println("Odd");
-			}
+		       }
 		}
 
 }

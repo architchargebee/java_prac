@@ -1,3 +1,6 @@
+/*
+Implement an animal class. You should be able to create an instance and populate its variables using user input. The code should not end once it configures an animal object. It should ask for the next input. Also it should keep printing the number of animals created.
+*/
 package package_day3;
 
 import java.io.Console;
@@ -25,7 +28,7 @@ public class Animal{
 	}
 }
 
-
+// Class to define the properties
 class AnimalProp{
 	
 	static int count=0;
