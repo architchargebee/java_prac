@@ -50,14 +50,8 @@ public class ArrayRev{
 			System.out.println("Invalid entry");
 			System.exit(0);
 		}
-		
-		/*for (int i=0; i<row; i++) {
-    			for(int j=0; j<row; j++) {
-       				 arr[i][j] = Integer.parseInt(result[(row*i)+j]);
-			}
-		}*/
 		for (int i=0; i<row*row; i++)
-			arr[i/row][i%row]=(int)Float.valueOf(result[i]);
+			arr[i/row][i%row]=Math.round(Float.valueOf(result[i]));
 		return arr;
 	}
 	//algorithm for rotating it right
