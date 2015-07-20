@@ -5,10 +5,12 @@ class Employee{
 	private double taxableIncome;
 	private double taxAmount;
 
-	Employee(String name, boolean gender, double taxableIncome){
-		this.name=name;
-		this.gender=gender;
-		this.taxableIncome=taxableIncome;
+	Employee(){
+		Console cons= System.console();
+		System.out.println("Employee Details");		
+		this.name=cons.readLine("Enter the name: ");
+		this.gender= (cons.readLine("Gender(m/f): ").charAt(0) == 'm') ? true: false;
+		this.taxableIncome=Double.parseDouble(cons.readLine("Enter taxable income: "));
 	}
 
 	void setTaxableIncome(double val){
@@ -30,7 +32,9 @@ class Employee{
 		return taxableIncome;
 	}
 	void display(){
-		System.out.println("["+name+"] | ["+(gender? "male":"female")+"] | ["+taxableIncome+"] | ["+taxAmount+"]");
+		//String print = emp.
+         	//StringBuilder sb = new StringBuilder(palindrome);
+		System.out.println("["+getName()+"] | ["+ (getGender() ? "male":"female")+"] | ["+getTaxableIncome()+"] | ["+getTaxAmount()+"]");
 	}
 }
 
@@ -38,34 +42,29 @@ public class IncomeTax{
 	private static Employee calculateTax(Employee emp){
 		int tax;
 		double taxValue;
-		if(emp.getGender()){
-			tax=20;
-		}
-		else {
-			tax=15;
-		}
+		tax =emp.getGender() == true ? 20:15;
 		taxValue= ((double) (tax) * emp.getTaxableIncome())/100.0d;
-		//System.out.println(taxValue+"*************");
 		emp.setTaxAmount(taxValue);
 		return emp;
 	}
+	
 	public static void main(String[] args) throws Exception{
+		int n;
 		Console cons= System.console();
-		String name;
-		boolean gender;
-		double income;
-		Employee[] emp= new Employee[3];
+		n=Integer.valueOf(cons.readLine("Enter the number of employees: "));
+		Employee[] emp= new Employee[n];
 		int i;
-		for(i=0; i< emp.length; i++){
-			System.out.println("Employee...");
-			name=cons.readLine("Enter the name: ");
-			gender= (cons.readLine("Gender(m/f): ").charAt(0) == 'm') ? true: false;
-			income= Double.parseDouble(cons.readLine("Enter taxable income: "));
-			Employee empTemp= new Employee(name, gender, income);
-			emp[i]=  calculateTax(empTemp);
+		System.out.println("Enter details of 3 employees");
+		for(i=0; i< n; i++){
+			Employee tempemp= new Employee();
+			emp[i]=  calculateTax(tempemp);
 			System.out.println();
 		}
+		
+		
 		System.out.println("\nPrinting all employees");
+		
+		System.out.println("[name] [gender] [taxableIncome] [taxAmount]");
 		for(i=0; i<emp.length; i++){
 			emp[i].display();
 		}

@@ -8,22 +8,21 @@ import java.io.Console;
 public class Animal{
 	
 	public static void main(String[] args) throws Exception{
-		AnimalProp obj1= new AnimalProp("human", "sapien");
-		System.out.println("Default value");
-		obj1.printDetails();
 		Console cons= System.console();
-		String name, species, order;
+		int count =0;
 		char flag='y';
+		AnimalProp[] arrayobj = new AnimalProp[10];
 		while(flag == 'y'){
-			System.out.println("Enter the animal description: ");
-			name=cons.readLine("Name: ");
-			species= cons.readLine("Species: ");
-			order= cons.readLine("Order: ");
-			AnimalProp obj= new AnimalProp(name, species, order);
+			System.out.println("Enter the student details: ");
+			arrayobj[count]=new AnimalProp();
+			count++;
 			flag=cons.readLine("Do u want to continue??? (y/n)").charAt(0);
-			obj.printDetails();
 		}
-		System.out.println("Exiting");
+		System.out.println("Printing all student data:");
+		//for(AnimalProp obj:arrayobj)
+		for(int i=0;i<count;i++)
+			arrayobj[i].printDetails();
+		
 
 	}
 }
@@ -31,26 +30,20 @@ public class Animal{
 // Class to define the properties
 class AnimalProp{
 	
-	static int count=0;
-	String class1, order, species;
-	String name;
-	
-	AnimalProp(String name, String species){
-		this(name, species, "Mammalia", "Chordata");
-	}
+	static int count=1;
+	String name,standard,section;
+	int index;
 
-	AnimalProp(String name, String species, String order){
-		this(name, species, order,"Chordata"); 
-	}
-
-	AnimalProp(String name, String species, String order, String class1){
-		this.name= name;
-		this.species= species;
-		this.order= order;
-		this.class1= class1;
+	AnimalProp(){
+		Console cons= System.console();
+		this.name=cons.readLine("Name- ");
+		this.standard=cons.readLine("standard- "); 
+		this.section=cons.readLine("Section- "); 
+		index=count++;
 	}
 	
-	void printDetails(){
-		System.out.println("Name: " +name+ "\nSpecies: "+species+ "\nOrder: "+order+"\nClass: "+class1);
+	public void printDetails(){
+		System.out.println("serial number- "+index+" of "+count);
+		System.out.println("Name: " +this.name+ "\nSpecies: "+this.standard+ "\nOrder: "+this.section);
 	}
 }
