@@ -74,11 +74,14 @@ public class Factorial implements Iterable{
 	public static void main(String[] args){
 		Console cons=System.console();
 		Integer lowerLimit, upperLimit;
+
 		lowerLimit= Integer.valueOf(cons.readLine("Enter the lower limit: "));
 		upperLimit= Integer.valueOf(cons.readLine("Enter the upper limit: "));
+
 		Factorial obj= new Factorial(lowerLimit, upperLimit);
 		obj.calculateFactorial();
 		System.out.println("The output is\n"+obj.toString());
+		
 		Iterator iter= obj.iterator();
 		System.out.println("Printing using Iterator...");
 		while(iter.hasNext()){

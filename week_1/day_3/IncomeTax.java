@@ -32,8 +32,6 @@ class Employee{
 		return taxableIncome;
 	}
 	void display(){
-		//String print = emp.
-         	//StringBuilder sb = new StringBuilder(palindrome);
 		System.out.println("["+getName()+"] | ["+ (getGender() ? "male":"female")+"] | ["+getTaxableIncome()+"] | ["+getTaxAmount()+"]");
 	}
 }

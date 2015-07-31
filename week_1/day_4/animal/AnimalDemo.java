@@ -7,6 +7,7 @@ public class AnimalDemo{
 	public static void main(String[] args) throws Exception{
 		ArrayList <Animal> animals= new ArrayList <Animal> ();
 		Console cons=System.console();
+
 		int n;
 		char ch;
 		//Bat obj=new Bat();
@@ -35,9 +36,6 @@ public class AnimalDemo{
 
 		}while(ch=='y');
 
-		//System.out.println(obj.getName()+"\n"+obj.getHerb()+"\n"+obj.getWalk());
-		//System.out.println(obj.name+"\t"+ (animals.get(0) instanceof Bat )+ "\tbat1: "+animals.get(0)+"\tbat2: "+animals.get(1));
-
 		
 		putAnimals(animals);
 		putHerb(animals);
@@ -53,20 +51,18 @@ public class AnimalDemo{
 		}
 	}
 	private static void putHerb(List <Animal> animals){
-		int i;
 		System.out.println("Listing all the Herbivores...");
-		for(i=0; i< animals.size(); i++){
-			if(animals.get(i).getHerb()){
-				System.out.println( animals.get(i).getName() );
+		for(Animal a:animals){
+			if(a.getHerb()){
+				System.out.println( a.getName() );
 			}
 		}
 	}
 	private static void putFly(List <Animal> animals){
-		int i;
 		System.out.println("Listing all the Animals that can fly...");
-		for(i=0; i< animals.size(); i++){
-			if(!(animals.get(i).getWalk())){
-				System.out.println( animals.get(i).getName() );
+		for(Animal a:animals){
+			if(!(a.getWalk())){
+				System.out.println( a.getName() );
 			}
 		}
 	}
