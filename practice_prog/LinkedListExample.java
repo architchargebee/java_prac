@@ -8,10 +8,10 @@ public class LinkedListExample {
          /*add(String Element) is used for adding 
           * the elements to the linked list*/
          linkedlist.add(556666);
-         linkedlist.add(dfhdhfd);
+         linkedlist.add("dfhdhfd");
          linkedlist.add("Item3");
          linkedlist.add("Item6");
-         linkedlist.add("Item2");
+         linkedlist.add(123);
 
          /*Display Linked List Content*/
          System.out.println("Linked List Content: " +linkedlist);

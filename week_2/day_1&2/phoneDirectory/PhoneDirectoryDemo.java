@@ -6,7 +6,7 @@ public class PhoneDirectoryDemo{
 	public static void main(String[] args){
 		String[][] inputStringArray= new String[3][5];
 
-		inputStringArray[0][0]="Bright Wayn";
+		inputStringArray[0][0]="Archit khullar";
 		inputStringArray[0][1]="Chennai";
 		inputStringArray[0][2]="1234567890";
 		inputStringArray[0][3]="1212121212";
