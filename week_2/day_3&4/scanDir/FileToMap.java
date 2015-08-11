@@ -1,3 +1,12 @@
+/*
+* program to scan a directory and its sub directories and print all the file extensions along with the number of files with that extension
+* FileToMAp class extends SimpleFileVisitor class to traverse through the directory tree.
+* getFileWithoutExtension - takes in the file path and returns the file name without extension.
+* getExtension - takes in the file path and returns the extension of the file in that path.
+* insert - Maps the extensions as key and file names as values
+* insertInMap - calls the funtions 
+*/ 
+
 package scanDir;
 
 import java.io.*;
@@ -11,6 +20,7 @@ public class FileToMap extends SimpleFileVisitor<Path> {
 
         private Map <String, ArrayList <String> > allFiles= new HashMap <String, ArrayList <String>> ();
 
+	
 	//Given the path, returns the file name without the extension
         private String getFileWithoutExtension(Path file){
         	String name= file.getFileName().toString();
@@ -18,6 +28,7 @@ public class FileToMap extends SimpleFileVisitor<Path> {
         	return name.substring(0,index);
         }
 
+        
         //Given the path, returns the extension of the file in that path
         private String getExtension(Path file){
         	String name= file.getFileName().toString();
@@ -47,14 +58,15 @@ public class FileToMap extends SimpleFileVisitor<Path> {
         	}
         }
 
-        // Invoke the pattern matching
-        // method on each file.
+        /* Invoke the pattern matching
+         * method on each file.
+	 * Simple File visitor methods
+	 */
         @Override
         public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
         	if(!(Files.isDirectory(file))) {
         		insertInMap(file);
         	}
-        	//System.out.println("File func:" + file.getFileName().toString());
             	return CONTINUE;
         }
 

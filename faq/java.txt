@@ -10,5 +10,56 @@ What is Interface - similaritites b/w struct and interface - how is java related
 Read about the good programming practices in java?
 Java camel casing
 Read the documenataion on strings and other in built parsing helps in java language - inbuilt classes ----JAVA 8 from oracle site
+Buffered Reader
+Where is buffer memory stored
+Scanner/ Buffer difference
+String tokenizer
+Input Stream Reader
+Program with inner class as public
+import/ package -difference and use case
+System variables
+Learn as much as you can about static
+IO exception
+Exception handling
+call by value - java - why how - the glitch - reference for objects
+static advantages/ disadvantages
+Enum its application and added new things in Enum
+Differnece between Inheritance and Nested class
+Multiple classes p same function - which one is called and when - and how to call the other method using classname.function
+Packages error - merge problems
+Ineer classes - access moodifiers
+Collections and arrays
+Package priorities - same class name/ same class methos etc.
+Ambigous class
+Can we use two same class file
+Difference between Overriding/ static import
+Methods definition inside interface
+using new delcare an object of interface - DDM - Dynamic Method dispatch - its use and when to use
+Default method
+Private constructor
+Constructor in interface - not there why?
+singleton classes
+super/this keyword - method calling using that
+------------week - 2------------
+HashMap vs Concurrent HashMap
+Individual properties of a Collection type - when to use which
+advantages/ disadvantages
+Default methods of all the types of collection
+Traversing them
+Final/ const difference
+Heap memory
+B-tree
+Know about the data structures used in Collections
+Default length of map
+Comparator/Comparable interface - their methods overriden
+Default object type of LinkedList
+Diamond operator - how to reduce
+File
+Files
+JSONObject/ JSONArray - reading parsing
+Fileutils
+Readers and writers
+csv - reading/parsing
+array list
 
 

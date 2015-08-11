@@ -2,41 +2,55 @@ package json_tut;
 
 
 import org.json.*;
+
 import java.util.*;
 import java.text.*;
-import java.io.*;
 
-public class Teacher extends Person {
+public class Teacher{
+	private Date dateOfJoining;
+	private String id;
+	private String name;
+	private Double salary;
+	private List <Classes> classesTakingCareOf= new ArrayList <Classes> ();;
 
-	private Float salary;
-	private ArrayList<String> classesHandled = new ArrayList();
+	private JSONObject teachObj;
 
-   
-	public Float getSalary() {
-	        return salary;
-    	}
+	public Teacher(JSONObject teachObj){
+		this.teachObj=teachObj;
+	}
 
-    	public void setSalary(Float salary) {
-        	this.salary = salary;
-    	}
+	public void setData() throws Exception{
+		id= teachObj.getString("ID");
+		name= teachObj.getString("Name");
+		dateOfJoining= getDateOfJoining();
+		salary= teachObj.getDouble("Salary");
+		setClassesList(teachObj.getJSONArray("Classes Taking Care Of"));
+	}
 
-    	public ArrayList<String> getClassesHandled() {
-        	return classesHandled;
-    	}
+	private Date getDateOfJoining(){
+		try{
+			SimpleDateFormat dateOfJoiningFormat= new SimpleDateFormat("dd/MM/yyyy");
+			return dateOfJoiningFormat.parse( teachObj.getString("Date Of Joining") );
+		}catch(Exception e){
+			System.err.println(e);
+			e.printStackTrace();
+		}
+		return null;
+	}
 
-    	public void setClassesHandled(ArrayList<String> classesHandled) {
-        	this.classesHandled = classesHandled;
-    	}
+	private void setClassesList(JSONArray classesList) throws Exception{
+		for(int i=0; i<classesList.length(); i++){
+			classesTakingCareOf.add( Classes.valueOf(classesList.getString(i)) );
+		}
+	}
 
-    	public void print() {
-        	System.out.println("Name: " + super.getName());
-        	System.out.println("Salary: " + this.salary);
-        	System.out.println("ID: " + super.getId());
-        	System.out.println("Joining Date: " + super.getJoiningDate());
-        	System.out.println("Classes Handled: ");
-        	for (int i = 0; i <classesHandled.size(); ++i) {
-            		System.out.println(this.classesHandled.get(i));
-        	}
-
-    	}
+	public String toString(){
+		StringBuilder returnString= new StringBuilder();
+		returnString.append("Teacher Class\n").append(String.format("%s; %s; %s; %f\n",id, dateOfJoining, name, salary));
+		for(Classes std: classesTakingCareOf){
+			returnString.append(std).append(" ");
+		}
+		returnString.append("\n");
+		return returnString.toString();
+	}
 }

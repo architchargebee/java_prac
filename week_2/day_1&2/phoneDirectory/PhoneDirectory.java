@@ -9,6 +9,7 @@ public class PhoneDirectory{
 		this.directory=directory;
 	}
 
+	//method for searching by phonr number - also searches for the substring in the name
 	private void searchByName(String name){
 		String temp;
 		String nameLowerCase= name.toLowerCase();
@@ -21,13 +22,15 @@ public class PhoneDirectory{
 		}
 		display(outputArrayList);
 	}
-
+	
+	//display method - prints the content of searched content
 	private void display(ArrayList <Entry> outputArrayList){
 		for(Entry person: outputArrayList){
 			person.display();
 		}
 	}
 
+	//method for search by phone number
 	private void searchByPhoneNumber(int number){
 		ArrayList <Entry> outputArrayList= new ArrayList <Entry> ();
 		for(Entry person:directory){
@@ -38,6 +41,7 @@ public class PhoneDirectory{
 		display(outputArrayList);	
 	}
 
+	//Menu driven search option - default is name - multiple search option
 	public void userOptions(){
 		int n;
 		char c;

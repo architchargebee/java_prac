@@ -1,3 +1,6 @@
+/* Program to Copy files from a given directory and subdirectories into a single directory.
+*
+*/
 package moveFiles;
 
 import java.io.*;
@@ -9,7 +12,7 @@ import static java.nio.file.FileVisitOption.*;
 import static java.nio.file.StandardCopyOption.*;
 
 
-//Copies files from a given directory and subdirectories into a single directory.
+Copies files from a given directory and subdirectories into a single directory.
 public class FileToNewDir extends SimpleFileVisitor<Path> {
 
         private HashSet <String> allFiles;
@@ -28,7 +31,8 @@ public class FileToNewDir extends SimpleFileVisitor<Path> {
             	}
         }
 
-	//called for every file in the walkFileTree(Path, SimpleFileVisitor). copies the file directly if it is a new file. if a file with the same name exists, the subsequent files with the same name are indexed.
+	/*called for every file in the walkFileTree(Path, SimpleFileVisitor). copies the file directly if it is a new file. if a file with the 		  same name exists, the subsequent files with the same name are indexed.
+	*/
         public void copyToDir(Path file) {
           	String fileNameWithExtension= file.getFileName().toString();
           	int indexOfFileName = fileNameWithExtension.lastIndexOf('.');
@@ -36,8 +40,9 @@ public class FileToNewDir extends SimpleFileVisitor<Path> {
           	Path newDir;
           	System.out.println("Copying "+fileNameWithExtension+"...");
 		
-		//To check if a file with the same name exists
-           	//If the file with the same name does not exist, create a new file with the same name
+		/*To check if a file with the same name exists
+           	 * If the file with the same name does not exist, create a new file with the same name
+           	 */
 	        if(!(allFiles.contains(fileName) ) ){
         	        newDir = Paths.get(newDirString + "/" +fileNameWithExtension);
         	        allFiles.add(fileName);
@@ -85,8 +90,9 @@ public class FileToNewDir extends SimpleFileVisitor<Path> {
             	return true;
         }
 
-        // Invoke the pattern matching
-        // method on each file.
+        /* Invoke the pattern matching
+         * method on each file.
+        */
         @Override
         public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
         	copyToDir(file);

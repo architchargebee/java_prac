@@ -27,7 +27,8 @@ public class WordCount{
 			words.put(key, 1);
 		}
 	}
-
+	
+	using delimiters reading the file
 	public void readFile(){
 		inputFile.useDelimiter("\\s* | \\\" | .* | \\* | ,* | \\\'* | \\n* ");
 		while(inputFile.hasNext()){

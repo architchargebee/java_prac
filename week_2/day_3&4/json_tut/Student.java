@@ -1,39 +1,58 @@
 package json_tut;
 
-import org.json.*;
-import json_tut.*;
 import java.util.*;
 import java.text.*;
-import java.io.*;
+import java.lang.*;
 
-public class Student extends Person {
-    
-	private String standard;
-	private ArrayList<Marks> marks = new ArrayList();
-    
-	public String getStandard() {
-	        return standard;
+import org.json.*;
+
+public class Student{
+
+	private JSONObject stuObj;
+
+	private Date dateOfJoining;
+	private String id;
+	private Map <String, Long> marks= new HashMap <String, Long>();
+	private String name;
+	private Classes std;
+	
+	public Student(JSONObject stuObj){
+		this.stuObj=stuObj;
 	}
 
-    	public void setStandard(String standard) {
-        	this.standard = standard;
-    	}
+	public void setData() throws Exception{
+		dateOfJoining= getDateOfJoining();
+		id= stuObj.getString("ID");
+		name= stuObj.getString("Name");
+		std= Classes.valueOf(stuObj.getString("Std"));
+		setMarksList(stuObj.getJSONArray("Marks"));
+	}
 
-    	public ArrayList<Marks> getMarks() {
-        	return marks;
-    	}
+	private Date getDateOfJoining(){
+		try{
+			SimpleDateFormat dateOfJoiningFormat= new SimpleDateFormat("dd/MM/yyyy");
+			return dateOfJoiningFormat.parse( stuObj.getString("Date Of Joining") );
+		}catch(Exception e){
+			System.err.println(e);
+			e.printStackTrace();
+		}
+		return null;
+	}
 
-    	public void setMarks(ArrayList<Marks> marks) {
-        	this.marks = marks;
-    	}
-    
-    	public void print() {
-        	System.out.println("Name: " + super.getName());
-        	System.out.println("Standard: " + this.standard);
-        	System.out.println("ID: " + super.getId());
-        	System.out.println("Joining Date: " + super.getJoiningDate());
-        	for(int i=0; i<marks.size(); ++i)
-           		marks.get(i).print();
-        
-    	}
+	private void setMarksList(JSONArray marksJSON) throws Exception{
+		for(int i=0; i<marksJSON.length(); i++){
+			JSONObject tempMark= marksJSON.getJSONObject(i);
+			marks.put(tempMark.getString("Subject"), tempMark.getLong("Mark"));
+		}
+	}
+
+	public String toString(){
+		StringBuilder returnString= new StringBuilder();
+		returnString.append("Student Class\n").append(String.format("%s; %s; %s; ",id, dateOfJoining, name)).append(std).append("\n");
+		for(String key: marks.keySet()){
+			returnString.append(key).append(": ").append(marks.get(key)).append("\t");
+		}
+		returnString.append("\n");
+		return returnString.toString();
+	}
 }

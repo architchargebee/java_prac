@@ -12,16 +12,16 @@ public class MapWordsDemo{
 	}
 
 	private static void addWords(ArrayList <String> givenList){
-		givenList.add("Charge");
-		givenList.add("Chargebee");
-		givenList.add("Charging");
-		givenList.add("Charged");
-		givenList.add("Archit");
-		givenList.add("Archit_1");
-		givenList.add("Help");
-		givenList.add("Held");
-		givenList.add("Hello");
-		givenList.add("Sing");
+		givenList.add("charge");
+		givenList.add("chargebee");
+		givenList.add("charging");
+		givenList.add("charged");
+		givenList.add("archit");
+		givenList.add("archit_1");
+		givenList.add("help");
+		givenList.add("held");
+		givenList.add("hello");
+		givenList.add("sing");
 		givenList.add("play");
 		givenList.add("code");
 		givenList.add("coding");
