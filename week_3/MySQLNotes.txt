@@ -1,0 +1,114 @@
+to start mysql: 
+sudo /usr/local/mysql/support-files/mysql.server start
+sudo /usr/local/mysql/support-files/mysql.server stop
+sudo /usr/local/mysql/support-files/mysql.server restart
+ mysql.server restart
+mysql -u root
+
+to create back up of the database:
+./mysqldump -u root ReservationSystem > /Users/cb-rhama/chargebee/training/week3/mySQL/backup_ReservationSystem.sql
+to take the databse from the .sql file
+./mysql -u root ReservationSystem < /Users/cb-rhama/chargebee/training/week3/mySQL/backup_ReservationSystem.sql
+use -p (i.e root -p database) if the database has a password. this will prompt u to type a database password.
+
+to view all the databases: SHOW DATABASES;
+CREATE DATABASE IF NOT EXISTS southwind;
+DROP DATABASE IF EXISTS southwind;
+To change a database to default: use mySecondDatabase; 
+show tables;
+to create a table:
+create table if not exists Person (
+    -> ID int unsigned not null AUTO_INCREMENT,
+    -> FName char(30) null,
+    -> LName char(30) not null default "Doe",
+    -> primary key(ID),
+    -> foriegn key (column) references TableName(column) on update cascade on delete restrict on delete cascade;
+    -> );
+SHOW CREATE TABLE person;
+Insert value into a table
+INSERT INTO products (productCode, name, quantity, price) VALUES
+		('PEC', 'Pencil 2B', 10000, 0.48),
+		('PEC', 'Pencil 2H', 8000, 0.49);
+INSERT INTO products VALUES
+		(NULL, 'PEN', 'Pen Blue',  8000, 1.25),
+		(NULL, 'PEN', 'Pen Black', 2000, 1.25);
+INSERT INTO tableName SET column1=value1, column2=value2, ...
+
+DESCRIBE person;
+
+SELECT 1+1, NOW();
+SELECT name, price FROM products WHERE name LIKE 'P__ %';
+				WHERE (price BETWEEN 1.0 AND 2.0) AND (quantity BETWEEN 1000 AND 2000);
+				WHERE name IN ('Pen Red', 'Pen Black');
+				WHERE productCode IS NULL;
+				WHERE (productCost <> 200) and (serviceCost == 250);
+				WHERE criteria ORDER BY columnA ASC|DESC, columnB ASC|DESC, ...
+Skip the first two rows and display the next 1 row
+
+SELECT * FROM products ORDER BY price LIMIT 2, 1;
+
+SELECT FName,count(ID) from person natural join customer group by FName order by Lname desc;
+Besides COUNT(), there are many other GROUP BY aggregate functions such as AVG(), MAX(), MIN() and SUM().
+WHERE cannot operate on group by and aggregate function so we use HAVING
+
+WITH ROLLUP shows group summery
+
+% and _ are used for string matching.
+
+DELETE FROM tableName
+DELETE FROM tableName WHERE criteria
+
+ALTER TABLE products
+		ADD COLUMN supplierID INT UNSIGNED NOT NULL,
+		ADD foreign key (columnName) references table(columnName),
+		DROP FOREIGN KEY key,
+		DROP columnName,
+		ADD COLUMN date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;
+		
+UPDATE tableName SET columnName = {value|NULL|DEFAULT}, ... WHERE criteria
+
+To copy table to file
+ select * from customer natural join person into outfile "dest location" columns terminated by ',';
+
+To copy file to table 
+ LOAD DATA LOCAL INFILE 'src location' INTO TABLE products COLUMNS TERMINATED BY ',';
+
+Foreign key: ON UPDATE or ON DELETE
+RESTRICT, CASCADE, SET NULL and NO ACTION
+
+To know the default name of the foreign key.
+SELECT
+  constraint_name
+FROM
+  information_schema.REFERENTIAL_CONSTRAINTS
+WHERE
+  constraint_schema = 'ReservationSystem' AND table_name = 'bookings';
+
+
+//insert using select
+insert into students_summary
+select name, rollno 
+from student;
+
+
+---------------------how to handle dates------------------------
+select inspections.name
+from inspections
+where
+  to_char(inspections.insp_date, 'YYYY') = 2010 and
+  to_char(inspections.insp_date, 'MM') = 06;
+  
+  select inspections.name
+  from inspections
+ where inspections.date >= DATE '2010-06-01'
+   and inspections.date < DATE '2010-07-01'
+   
+
+
+select inspections.name
+from inspections
+where
+  extract(year from inspections.insp_date) = 2010 and
+  extract(month from inspections.insp_date) = 6;
+
+

@@ -1,0 +1,106 @@
+1.List the students who didn’t appear for any exams.
+Format: name
+
+SELECT students.name, year
+FROM marks
+JOIN students ON marks.student_id = students.id
+WHERE annual = 0 AND quarterly = 0 AND half_yearly = 0;
++------+------+
+| name | year |
++------+------+
+| Thor | 2007 |
++------+------+
+1 row in set (0.00 sec)
+
+2. Find the total marks scored by each students in the annual exams. If the student hasn’t appeared for any annual exam, he should still be listed with total marks scored as “0”.
+Format: name, marks, year
+
+SELECT students.name, ifnull(sum(annual),0), marks.year
+FROM marks 
+JOIN students ON marks.student_id = students.id
+GROUP BY students.id, year;
++-----------+-----------------------+------+
+| name      | ifnull(sum(annual),0) | year |
++-----------+-----------------------+------+
+| Thor      |                   424 | 2003 |
+| Thor      |                   309 | 2004 |
+| Thor      |                   375 | 2005 |
+| Thor      |                   296 | 2006 |
+| Thor      |                   212 | 2007 |
+| Hulk      |                   296 | 2003 |
+| Hulk      |                   463 | 2004 |
+| Hulk      |                   295 | 2005 |
+| Hulk      |                   218 | 2006 |
+| Hulk      |                   429 | 2007 |
+| Daredevil |                   465 | 2003 |
+| Daredevil |                   319 | 2004 |
+| Daredevil |                   385 | 2005 |
+| Daredevil |                   318 | 2006 |
+| Daredevil |                   306 | 2007 |
+| X Man     |                   261 | 2003 |
+| X Man     |                   307 | 2004 |
+| X Man     |                   312 | 2005 |
+| X Man     |                   287 | 2006 |
+| X Man     |                   354 | 2007 |
+| Ironman   |                   323 | 2003 |
+| Ironman   |                   287 | 2004 |
+| Ironman   |                   287 | 2005 |
+| Ironman   |                   320 | 2006 |
+| Ironman   |                   412 | 2007 |
++-----------+-----------------------+------+
+25 rows in set (0.01 sec)
+
+3. List the students with the total marks scored in quarterly from all the subjects they had appeared during the year 2003.
+Format: name, total, grade
+
+SELECT name, sum(marks.quarterly) AS total, marks.grade
+FROM students
+JOIN marks ON marks.student_id = students.id
+WHERE marks.year = 2003
+GROUP BY students.id;
++-----------+-------+-------+
+| name      | total | grade |
++-----------+-------+-------+
+| Thor      |     0 |     6 |
+| Hulk      |   203 |     6 |
+| Daredevil |   428 |     6 |
+| X Man     |   300 |     6 |
+| Ironman   |   277 |     6 |
++-----------+-------+-------+
+5 rows in set (0.00 sec)
+
+4.List the 9th and 10th grade students who received more than 3 medals.
+Format: name, grade, no_of_medals
+
+SELECT students.name, grade, (COUNT(medal_recieved)) AS no_of_medals
+FROM medals
+JOIN students ON medals.student_id = students.id
+WHERE grade IN (6,8)
+GROUP BY students.id,year
+HAVING no_of_medals > 3;
+Empty set (0.00 sec)
+
+5. List the students who got less than 2 medals. This should also include the students who has not won any medals.
+Format: name, grade, no_of_medals
+
+SELECT students.name, grade, (COUNT(medal_recieved)) AS no_of_medals
+FROM medals
+JOIN students ON medals.student_id = students.id
+WHERE grade IN (6,8)
+GROUP BY students.id
+HAVING no_of_medals < 3;
+
+List the students who has not yet received any medals but scored more than 90 marks in all the subjects in the annual exam for that year.
+Format: name, year
+
+List the records from the medals table for the students who had won more than 3 medals.
+Format: name, game_id, medal_won, year, grade
+
+List the number of medals and percentage of marks(based on total for the 5 subjects) scored in each year.
+Format: name, medals, quarterly_per, half_yearly_per, annual_per, year, grade
+
+Lets assign some rating for the total marks scored - S(450-500), A(400-449), B(350-399), C(300-349), D(250,299), E(200-249), F(below 200). List the students with the grade obtained in each year for each exam(quarterly, half-yearly and annual)
+Format: name, quarterly_rating, half_yearly_rating, annual_rating, year, grade
+
+
+

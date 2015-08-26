@@ -1,0 +1,677 @@
+
+
+-----------------------------------------TABLES----------------------------------
+
+create table Trains (
+Trainno int unsigned not null,
+Trainname char(50) not null default 'train'
+primary key (Trainno)
+);
+		
+desc Trains;
++-----------+------------------+------+-----+---------+-------+
+| Field     | Type             | Null | Key | Default | Extra |
++-----------+------------------+------+-----+---------+-------+
+| Trainno   | int(10) unsigned | NO   | PRI | NULL    |       |
+| Trainname | varchar(50)      | NO   |     | train   |       |
++-----------+------------------+------+-----+---------+-------+
+2 rows in set (0.01 sec)
+
+
+create table Coaches (
+Coachcode int unsigned not null,
+Costperkm decimal(5,2) default 0,
+primary key (Coachcode)
+);
+		
+desc Coaches;
++-----------+------------------+------+-----+---------+-------+
+| Field     | Type             | Null | Key | Default | Extra |
++-----------+------------------+------+-----+---------+-------+
+| Coachcode | int(10) unsigned | NO   | PRI | NULL    |       |
+| costperkm | decimal(5,2)     | YES  |     | 0.00    |       |
++-----------+------------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+
+create table Stations ( 
+Stationid int unsigned not null, 
+Stationcode varchar(10) not null, 
+primary key (StationiD) 
+);
+		
+desc Stations;
++-------------+------------------+------+-----+---------+-------+
+| Field       | Type             | Null | Key | Default | Extra |
++-------------+------------------+------+-----+---------+-------+
+| Stationid   | int(10) unsigned | NO   | PRI | NULL    |       |
+| Stationcode | varchar(10)      | NO   |     | NULL    |       |
++-------------+------------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+
+
+create table Routes ( 
+Routeid int unsigned not null, 
+Originstationid int unsigned not null,  
+Destinationstationid int unsigned not null, 
+Distanceinkms decimal(8,2), 
+primary key (Routeid), 
+Foreign key (Originstationid) references Stations (Stationid), 
+Foreign key (Destinationstationid) references Stations (Stationid) 
+);
+
+desc Routes;
++----------------------+------------------+------+-----+---------+-------+
+| Field                | Type             | Null | Key | Default | Extra |
++----------------------+------------------+------+-----+---------+-------+
+| Routeid              | int(10) unsigned | NO   | PRI | NULL    |       |
+| Originstationid      | int(10) unsigned | NO   | MUL | NULL    |       |
+| Destinationstationid | int(10) unsigned | NO   | MUL | NULL    |       |
+| Distanceinkms        | decimal(8,2)     | YES  |     | NULL    |       |
++----------------------+------------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+
+
+create table TrainRouteMaps ( 
+RouteId int unsigned not null, 
+TrainNo int unsigned not null, 
+ArrivalTime TIME, 
+DepartureTime TIME,  
+DurationInMins int unsigned, 
+primary key (RouteId, TrainNo), 
+foreign key (RouteId) references Routes (RouteId), 
+foreign key (TrainNo) references Trains (TrainNo) 
+);
+
+
+desc TrainRouteMaps;
++----------------+------------------+------+-----+---------+-------+
+| Field          | Type             | Null | Key | Default | Extra |
++----------------+------------------+------+-----+---------+-------+
+| RouteId        | int(10) unsigned | NO   | PRI | NULL    |       |
+| TrainNo        | int(10) unsigned | NO   | PRI | NULL    |       |
+| ArrivalTime    | time             | YES  |     | NULL    |       |
+| DepartureTime  | time             | YES  |     | NULL    |       |
+| DurationInMins | int(10) unsigned | YES  |     | NULL    |       |
++----------------+------------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+create table TrainCoaches (
+TrainNo int unsigned,
+CoachCode int unsigned,
+NoOfSeats int unsigned,
+foreign key (TrainNo) references Trains (TrainNo),
+foreign key (CoachCode) references Coaches (CoachCode)
+);
+
+
+desc TrainCoaches;
++-----------+------------------+------+-----+---------+-------+
+| Field     | Type             | Null | Key | Default | Extra |
++-----------+------------------+------+-----+---------+-------+
+| TrainNo   | int(10) unsigned | YES  | MUL | NULL    |       |
+| CoachCode | int(10) unsigned | YES  | MUL | NULL    |       |
+| NoOfSeats | int(10) unsigned | YES  |     | NULL    |       |
++-----------+------------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+
+create table Bookings ( 
+BookingRefNo int unsigned not null auto_increment, 
+RouteId int unsigned,  
+TrainNo int unsigned,  
+CoachCode int unsigned, 
+DateOfJourney date not null, 
+DateOfBooking date, 
+NoOfTickets int unsigned, 
+primary key (BookingRefNo), 
+foreign key (RouteId) references TrainRouteMaps (RouteId), 
+foreign key (TrainNo) references TrainRouteMaps (TrainNo), 
+foreign key (CoachCode) references Coaches (CoachCode) 
+);
+
+desc Bookings;
++---------------+------------------+------+-----+---------+----------------+
+| Field         | Type             | Null | Key | Default | Extra          |
++---------------+------------------+------+-----+---------+----------------+
+| BookingRefNo  | int(10) unsigned | NO   | PRI | NULL    | auto_increment |
+| RouteId       | int(10) unsigned | YES  | MUL | NULL    |                |
+| TrainNo       | int(10) unsigned | YES  | MUL | NULL    |                |
+| CoachCode     | int(10) unsigned | YES  | MUL | NULL    |                |
+| DateOfJourney | date             | NO   |     | NULL    |                |
+| DateOfBooking | date             | YES  |     | NULL    |                |
+| NoOfTickets   | int(10) unsigned | YES  |     | NULL    |                |
++---------------+------------------+------+-----+---------+----------------+
+7 rows in set (0.00 sec)
+
+
+create table Users (
+UserId int unsigned not null,
+LoginId int unsigned not null,
+LPassword varchar(20) not null,
+primary key (UserId)
+);
+
+desc Users;
++-----------+------------------+------+-----+---------+-------+
+| Field     | Type             | Null | Key | Default | Extra |
++-----------+------------------+------+-----+---------+-------+
+| UserId    | int(10) unsigned | NO   | PRI | NULL    |       |
+| LoginId   | int(10) unsigned | NO   |     | NULL    |       |
+| LPassword | varchar(20)      | NO   |     | NULL    |       |
++-----------+------------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+-------------------------------------------------Populating Data--------------------------------------
+INSERT INTO `Trains` VALUES (10001,'Kovai Express'),(10002,'Aleppey Express'),(10003,'Kovai Express');
+Query OK, 3 rows affected (0.07 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+INSERT INTO `Coaches` VALUES (101,101.50),(102,136.00),(103,250.50),(104,366.50);
+Query OK, 4 rows affected (0.06 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+INSERT INTO `Stations` VALUES (103,'ALP'),(102,'CBE'),(101,'MAS'),(104,'MTPL');
+Query OK, 4 rows affected (0.05 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+INSERT INTO `Routes` VALUES (101,101,102,497.00),(102,101,103,738.40),(103,102,101,497.00),(104,101,104,543.80);
+Query OK, 4 rows affected (0.04 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+INSERT INTO `TrainRouteMaps` VALUES (101,10001,'13:15:00','07:30:00',345),(102,10002,'10:30:00','20:45:00',NULL);
+Query OK, 2 rows affected (0.06 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+INSERT INTO `TrainCoaches` VALUES (10001,101,72),(10001,103,72),(10002,102,72),(10002,103,64),(10002,104,54),(10003,102,72),(10003,102,72),(10003,103,64),(10003,102,72),(10003,103,64),(10003,104,54),(10002,102,72),(10002,102,72),(10003,103,64),(10002,103,64),(10002,104,54),(10001,101,72),(10001,101,72),(10001,103,64);
+Query OK, 19 rows affected (0.06 sec)
+Records: 19  Duplicates: 0  Warnings: 0
+
+INSERT INTO `Bookings` VALUES (101,101,10001,101,'2015-09-23','2015-06-13',4),(102,101,10001,103,'2015-10-23','2015-05-01',3),(110,102,10002,102,'2015-08-13','2015-03-21',2),(111,102,10002,102,'2015-08-13','2015-04-11',5),(112,102,10002,104,'2015-10-25','2015-05-21',2),(113,101,10001,103,'2015-02-22','2014-11-23',8);
+Query OK, 6 rows affected (0.06 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+------------------------------------------------------Data in each table-----------------------------------------
+SELECT *
+FROM Trains;
++---------+-----------------+
+| Trainno | Trainname       |
++---------+-----------------+
+|   10001 | Kovai Express   |
+|   10002 | Aleppey Express |
+|   10003 | Kovai Express   |
++---------+-----------------+
+3 rows in set (0.00 sec)
+
+SELECT *
+FROM Coaches;
++-----------+-----------+
+| Coachcode | costperkm |
++-----------+-----------+
+|       101 |    101.50 |
+|       102 |    136.00 |
+|       103 |    250.50 |
+|       104 |    366.50 |
++-----------+-----------+
+4 rows in set (0.00 sec)
+
+SELECT *
+FROM Stations;
++-----------+-------------+
+| Stationid | Stationcode |
++-----------+-------------+
+|       101 | MAS         |
+|       102 | CBE         |
+|       103 | ALP         |
+|       104 | MTPL        |
++-----------+-------------+
+4 rows in set (0.00 sec)
+
+SELECT *
+FROM Routes;
++---------+-----------------+----------------------+---------------+
+| Routeid | Originstationid | Destinationstationid | Distanceinkms |
++---------+-----------------+----------------------+---------------+
+|     101 |             101 |                  102 |        497.00 |
+|     102 |             101 |                  103 |        738.40 |
+|     103 |             102 |                  101 |        497.00 |
+|     104 |             101 |                  104 |        543.80 |
++---------+-----------------+----------------------+---------------+
+4 rows in set (0.00 sec)
+
+SELECT *
+FROM TrainRouteMaps;
++---------+---------+-------------+---------------+----------------+
+| RouteId | TrainNo | ArrivalTime | DepartureTime | DurationInMins |
++---------+---------+-------------+---------------+----------------+
+|     101 |   10001 | 13:15:00    | 07:30:00      |            345 |
+|     102 |   10002 | 10:30:00    | 20:45:00      |           NULL |
++---------+---------+-------------+---------------+----------------+
+2 rows in set (0.00 sec)
+
+SELECT *
+FROM TrainCoaches;
++---------+-----------+-----------+
+| TrainNo | CoachCode | NoOfSeats |
++---------+-----------+-----------+
+|   10001 |       101 |        72 |
+|   10001 |       103 |        72 |
+|   10002 |       102 |        72 |
+|   10002 |       103 |        64 |
+|   10002 |       104 |        54 |
+|   10003 |       102 |        72 |
+|   10003 |       102 |        72 |
+|   10003 |       103 |        64 |
+|   10003 |       102 |        72 |
+|   10003 |       103 |        64 |
+|   10003 |       104 |        54 |
+|   10002 |       102 |        72 |
+|   10002 |       102 |        72 |
+|   10003 |       103 |        64 |
+|   10002 |       103 |        64 |
+|   10002 |       104 |        54 |
+|   10001 |       101 |        72 |
+|   10001 |       101 |        72 |
+|   10001 |       103 |        64 |
++---------+-----------+-----------+
+19 rows in set (0.00 sec)
+
+SELECT *
+FROM Bookings;
++--------------+---------+---------+-----------+---------------+---------------+-------------+
+| BookingRefNo | RouteId | TrainNo | CoachCode | DateOfJourney | DateOfBooking | NoOfTickets |
++--------------+---------+---------+-----------+---------------+---------------+-------------+
+|          101 |     101 |   10001 |       101 | 2015-09-23    | 2015-06-13    |           4 |
+|          102 |     101 |   10001 |       103 | 2015-10-23    | 2015-05-01    |           3 |
+|          110 |     102 |   10002 |       102 | 2015-08-13    | 2015-03-21    |           2 |
+|          111 |     102 |   10002 |       102 | 2015-08-13    | 2015-04-11    |           5 |
+|          112 |     102 |   10002 |       104 | 2015-10-25    | 2015-05-21    |           2 |
+|          113 |     101 |   10001 |       103 | 2015-02-22    | 2014-11-23    |           8 |
++--------------+---------+---------+-----------+---------------+---------------+-------------+
+6 rows in set (0.00 sec)
+
+
+
+-------------------------------------------------------Queries-----------------------------------------
+1. To get the list of all trains
+
+SELECT Trainname
+FROM Trains;
++-----------------+
+| Trainname       |
++-----------------+
+| Kovai Express   |
+| Aleppey Express |
+| Kovai Express   |
++-----------------+
+3 rows in set (0.00 sec)
+
+2.To get the list of all train routes in the database
+
+SELECT RouteId, 
+st1.StationCode AS OriginStation,
+st2.StationCode AS DestinationStation 
+FROM Routes 
+JOIN Stations 
+AS st1 
+ON OriginStationId = st1.StationId
+JOIN Stations 
+AS st2 
+ON DestinationStationID= st2.StationID;
+
++---------+---------------+--------------------+
+| RouteId | OriginStation | DestinationStation |
++---------+---------------+--------------------+
+|     101 | MAS           | CBE                |
+|     102 | MAS           | ALP                |
+|     103 | CBE           | MAS                |
+|     104 | MAS           | MTPL               |
++---------+---------------+--------------------+
+4 rows in set (0.00 sec)
+
+3. Total number of seats in the each train.
+
+SELECT TrainCoaches.TrainNo, t.Trainname,
+sum(TrainCoaches.NoOfSeats) AS TotalNoOfSeats 
+FROM TrainCoaches
+JOIN Trains
+AS t
+ON t.Trainno=TrainCoaches.Trainno
+GROUP BY TrainCoaches.TrainNo;
+
++---------+-----------------+----------------+
+| TrainNo | Trainname       | TotalNoOfSeats |
++---------+-----------------+----------------+
+|   10001 | Kovai Express   |            352 |
+|   10002 | Aleppey Express |            452 |
+|   10003 | Kovai Express   |            462 |
++---------+-----------------+----------------+
+3 rows in set (0.00 sec)
+
+4. List of all routes goes to Coimbatore(CBE)
+
+SELECT Routes.Routeid,
+st1.StationCode AS OriginStation,
+st2.StationCode AS DestinationStation 
+FROM Routes
+JOIN Stations 
+AS st1 
+ON originStationId = StationId
+JOIN Stations 
+AS st2 
+ON DestinationStationID= st2.StationID
+where st2.StationCode like "CBE";
++---------+---------------+--------------------+
+| Routeid | OriginStation | DestinationStation |
++---------+---------------+--------------------+
+|     101 | MAS           | CBE                |
++---------+---------------+--------------------+
+1 row in set (0.00 sec)
+
+5.  List of all routes starting from bangalore, calcutta and chennai - changed to mas,cbe,alp
+
+SELECT RouteId, 
+st1.StationCode as OriginStation,
+st2.StationCode as DestinationStation 
+FROM Routes 
+JOIN Stations AS st1 ON originStationId = StationId
+JOIN Stations AS st2 ON DestinationStationID= st2.StationID
+WHERE
+st1.StationCode like "MAS" or
+st1.StationCode like "CBE" or
+st1.StationCode like "ALP";
++---------+---------------+--------------------+
+| RouteId | OriginStation | DestinationStation |
++---------+---------------+--------------------+
+|     101 | MAS           | CBE                |
+|     102 | MAS           | ALP                |
+|     103 | CBE           | MAS                |
+|     104 | MAS           | MTPL               |
++---------+---------------+--------------------+
+4 rows in set (0.00 sec)
+
+6. List of all the bookings booked between 1st Jan 2005 and 31st Dec 2005
+
+SELECT * 
+FROM Bookings 
+WHERE DateOfBooking BETWEEN 20141201 AND 20150428;
++--------------+---------+---------+-----------+---------------+---------------+-------------+
+| BookingRefNo | RouteId | TrainNo | CoachCode | DateOfJourney | DateOfBooking | NoOfTickets |
++--------------+---------+---------+-----------+---------------+---------------+-------------+
+|          110 |     102 |   10002 |       102 | 2015-08-13    | 2015-03-21    |           2 |
+|          111 |     102 |   10002 |       102 | 2015-08-13    | 2015-04-11    |           5 |
++--------------+---------+---------+-----------+---------------+---------------+-------------+
+2 rows in set (0.00 sec)
+
+7. List of all trains whose name begins with B - changed to A
+
+SELECT TrainName 
+FROM Trains 
+WHERE TrainName LIKE "A%";
++-----------------+
+| TrainName       |
++-----------------+
+| Aleppey Express |
++-----------------+
+1 row in set (0.00 sec)
+
+8. List of all bookings where DOB is not null
+
+SELECT * 
+FROM Bookings 
+WHERE DateOfBooking IS not null;
++--------------+---------+---------+-----------+---------------+---------------+-------------+
+| BookingRefNo | RouteId | TrainNo | CoachCode | DateOfJourney | DateOfBooking | NoOfTickets |
++--------------+---------+---------+-----------+---------------+---------------+-------------+
+|          101 |     101 |   10001 |       101 | 2015-09-23    | 2015-06-13    |           4 |
+|          102 |     101 |   10001 |       103 | 2015-10-23    | 2015-05-01    |           3 |
+|          110 |     102 |   10002 |       102 | 2015-08-13    | 2015-03-21    |           2 |
+|          111 |     102 |   10002 |       102 | 2015-08-13    | 2015-04-11    |           5 |
+|          112 |     102 |   10002 |       104 | 2015-10-25    | 2015-05-21    |           2 |
+|          113 |     101 |   10001 |       103 | 2015-02-22    | 2014-11-23    |           8 |
++--------------+---------+---------+-----------+---------------+---------------+-------------+
+6 rows in set (0.00 sec)
+
+9.List of all bookings for the booked in 2006, DOJ in 2007
+
+SELECT * 
+FROM Bookings 
+WHERE 
+year(DateOfBooking)= 2014 and 
+year(DateOfJourney)=2015;
++--------------+---------+---------+-----------+---------------+---------------+-------------+
+| BookingRefNo | RouteId | TrainNo | CoachCode | DateOfJourney | DateOfBooking | NoOfTickets |
++--------------+---------+---------+-----------+---------------+---------------+-------------+
+|          113 |     101 |   10001 |       103 | 2015-02-22    | 2014-11-23    |           8 |
++--------------+---------+---------+-----------+---------------+---------------+-------------+
+1 row in set (0.00 sec)
+
+10.Total number of coaches in the all the trains
+
+SELECT TrainCoaches.TrainNo, TrainName, 
+count(CoachCode) AS TotalNoOfCoaches 
+FROM Trains JOIN TrainCoaches ON TrainCoaches.TrainNo =  Trains.TrainNo
+GROUP BY TrainCoaches.TrainNo;
++---------+-----------------+------------------+
+| TrainNo | TrainName       | TotalNoOfCoaches |
++---------+-----------------+------------------+
+|   10001 | Kovai Express   |                5 |
+|   10002 | Aleppey Express |                7 |
+|   10003 | Kovai Express   |                7 |
++---------+-----------------+------------------+
+3 rows in set (0.00 sec)
+
+11.Total number of bookings in the database for the train no 16198 - (changed to 10001)
+
+SELECT Bookings.TrainNo, TrainName,
+COUNT(BookingRefNo) AS TotalNoOfBookings
+FROM Bookings 
+JOIN Trains ON Bookings.TrainNo = Trains.TrainNo 
+GROUP BY TrainNo having TrainNo= 10001;
++---------+---------------+-------------------+
+| TrainNo | TrainName     | TotalNoOfBookings |
++---------+---------------+-------------------+
+|   10001 | Kovai Express |                 3 |
++---------+---------------+-------------------+
+1 row in set (0.00 sec)
+
+12.Total no of tickets column 'total' , booked for train no. 14198 - (changed yo 10002)
+
+SELECT sum(NoOfTickets) AS Total 
+FROM Bookings 
+GROUP BY TrainNo having TrainNo=10002;
++-------+
+| Total |
++-------+
+|     9 |
++-------+
+1 row in set (0.01 sec)
+
+13.Minimum distance route
+
+SELECT RouteId,
+st1.StationCode AS OriginStation,
+st2.StationCode AS DestinationStation,
+DistanceInKms 
+FROM Routes 
+JOIN Stations AS st1 ON OriginStationId = st1.StationId
+JOIN Stations AS st2 ON DestinationStationID= st2.StationID
+WHERE DistanceInKms = (select min(DistanceInKms) FROM Routes);
++---------+---------------+--------------------+---------------+
+| RouteId | OriginStation | DestinationStation | DistanceInKms |
++---------+---------------+--------------------+---------------+
+|     101 | MAS           | CBE                |        497.00 |
+|     103 | CBE           | MAS                |        497.00 |
++---------+---------------+--------------------+---------------+
+2 rows in set (0.00 sec)
+
+14.Total number of tickets booked for each train in the database
+
+SELECT TrainName,
+ifnull(sum(NoOfTickets),0) AS Total 
+FROM Trains
+LEFT JOIN Bookings ON Bookings.TrainNo= Trains.TrainNo
+GROUP BY Bookings.TrainNo;
++-----------------+-------+
+| TrainName       | Total |
++-----------------+-------+
+| Kovai Express   |     0 |
+| Kovai Express   |    15 |
+| Aleppey Express |     9 |
++-----------------+-------+
+3 rows in set (0.00 sec)
+
+15.cost for 50 kms for each coach.
+
+SELECT CoachCode, CostPerKm*50
+FROM Coaches;
++-----------+--------------+
+| CoachCode | CostPerKm*50 |
++-----------+--------------+
+|       101 |      5075.00 |
+|       102 |      6800.00 |
+|       103 |     12525.00 |
+|       104 |     18325.00 |
++-----------+--------------+
+4 rows in set (0.01 sec)
+
+16.List the train name and departure time for the trains starting from Bangalore. - (changed to MAS)
+
+SELECT TrainName, DepartureTime 
+FROM Trains
+LEFT JOIN TrainRouteMaps ON TrainRouteMaps.TrainNo =Trains.TrainNo 
+LEFT JOIN Routes ON TrainRouteMaps.RouteId = Routes.RouteId 
+JOIN Stations ON Routes.OriginStationId= Stations.StationId
+WHERE StationCode LIKE "MAS";
++-----------------+---------------+
+| TrainName       | DepartureTime |
++-----------------+---------------+
+| Kovai Express   | 07:30:00      |
+| Aleppey Express | 20:45:00      |
++-----------------+---------------+
+2 rows in set (0.00 sec)
+
+17.List the trains for which the total no of tickets booked is greater than 500 - (changed to 5)
+
+SELECT TrainName,
+SUM(NoOfTickets) AS Total 
+FROM Trains
+LEFT JOIN Bookings ON Trains.TrainNo=Bookings.TrainNo 
+GROUP BY Bookings.TrainNo
+HAVING Total > 5;
++-----------------+-------+
+| TrainName       | Total |
++-----------------+-------+
+| Kovai Express   |    15 |
+| Aleppey Express |     9 |
++-----------------+-------+
+2 rows in set (0.00 sec)
+
+18. List the trains for which the total no of tickets booked is lesser than 50 - (changed to 10)
+
+SELECT TrainName,
+SUM(NoOfTickets) AS Total 
+FROM Trains
+LEFT JOIN Bookings ON Trains.TrainNo=Bookings.TrainNo 
+GROUP BY Bookings.TrainNo
+HAVING Total < 10;
++-----------------+-------+
+| TrainName       | Total |
++-----------------+-------+
+| Aleppey Express |     9 |
++-----------------+-------+
+1 row in set (0.00 sec)
+
+19.List the bookings along with train name, origin station, destination station and coach code after the date of journey ’25th Feb 2015’
+
+SELECT TrainName,
+st1.StationCode AS OriginStation,
+st2.StationCode AS DestStation,
+b1.CoachCode 
+FROM Bookings 
+AS b1
+JOIN Trains AS t1 ON b1.TrainNo=t1.TrainNo 
+JOIN Routes AS r1 ON b1.RouteId =  r1.RouteId
+JOIN Stations AS st1 ON r1.OriginStationId = st1.StationId
+JOIN Stations AS st2 ON r1.DestinationStationId= st2. StationId	
+WHERE b1.DateOfJourney > 20150901;
++-----------------+---------------+-------------+-----------+
+| TrainName       | OriginStation | DestStation | CoachCode |
++-----------------+---------------+-------------+-----------+
+| Kovai Express   | MAS           | CBE         |       101 |
+| Kovai Express   | MAS           | CBE         |       103 |
+| Aleppey Express | MAS           | ALP         |       104 |
++-----------------+---------------+-------------+-----------+
+3 rows in set (0.00 sec)
+
+20.List the trains via the route Mysore - Chennai (changed to MAS - CBE)
+
+SELECT t1.TrainNo, TrainName,
+st1.StationCode AS Source,
+st2.StationCode AS Destination 
+FROM TrainRouteMaps AS tr1 
+JOIN Trains AS t1 ON tr1.Trainno =t1.TrainNo 
+JOIN Routes AS r1 ON tr1.RouteId=r1.RouteId 
+JOIN Stations AS st1 ON r1.OriginStationId = st1.StationId 
+JOIN Stations AS st2 ON r1.DestinationStationId= st2.StationId
+WHERE 
+(st1.StationCode LIKE "MAS" OR st1.StationCode LIKE "CBE") and
+(st2.StationCode LIKE "MAS" OR st2.StationCode LIKE "CBE");
+
++---------+---------------+--------+-------------+
+| TrainNo | TrainName     | Source | Destination |
++---------+---------------+--------+-------------+
+|   10001 | Kovai Express | MAS    | CBE         |
++---------+---------------+--------+-------------+
+1 row in set (0.00 sec)
+
+21. List the trains for which are booked till now.
+
+SELECT * 
+FROM Trains 
+JOIN Bookings ON Trains.TrainNo = Bookings.TrainNo
+GROUP BY Trains.TrainNo;
++---------+-----------------+--------------+---------+---------+-----------+---------------+---------------+-------------+
+| Trainno | Trainname       | BookingRefNo | RouteId | TrainNo | CoachCode | DateOfJourney | DateOfBooking | NoOfTickets |
++---------+-----------------+--------------+---------+---------+-----------+---------------+---------------+-------------+
+|   10001 | Kovai Express   |          101 |     101 |   10001 |       101 | 2015-09-23    | 2015-06-13    |           4 |
+|   10002 | Aleppey Express |          110 |     102 |   10002 |       102 | 2015-08-13    | 2015-03-21    |           2 |
++---------+-----------------+--------------+---------+---------+-----------+---------------+---------------+-------------+
+2 rows in set (0.00 sec)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

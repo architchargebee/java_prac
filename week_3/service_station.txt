@@ -1,0 +1,138 @@
+create database if not exists service_station;
+
+show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| TEST               |
+| mysql              |
+| performance_schema |
+| service_staion     |
+| service_station    |
++--------------------+
+
+
+ create table SeriviceStation (  
+	 	id int unsigned not null auto_increment, 
+	 	name varchar(40) not null, 
+	 	address varchar(100), 
+	 	contact  varchar(10), 
+	 	primary key (id)
+	 	);
+	 	
+show tables;
++---------------------------+
+| Tables_in_service_station |
++---------------------------+
+| Employees                 |
+| SeriviceStation           |
++---------------------------+
+
+describe SeriviceStation;
++---------+------------------+------+-----+---------+----------------+
+| Field   | Type             | Null | Key | Default | Extra          |
++---------+------------------+------+-----+---------+----------------+
+| id      | int(10) unsigned | NO   | PRI | NULL    | auto_increment |
+| name    | varchar(40)      | NO   |     | NULL    |                |
+| address | varchar(100)     | YES  |     | NULL    |                |
+| contact | int(10)          | YES  |     | NULL    |                |
++---------+------------------+------+-----+---------+----------------+
+
+
+
+
+ create table Employees (  
+ 		id int unsigned not null auto_increment, 
+ 		name varchar(40) not null, 
+ 		age decimal(3,0) not null, 
+ 		contact  varchar(10), 
+ 		primary key (id)
+ 		);
+ 		
+ describe Employees;
++---------+------------------+------+-----+---------+----------------+
+| Field   | Type             | Null | Key | Default | Extra          |
++---------+------------------+------+-----+---------+----------------+
+| id      | int(10) unsigned | NO   | PRI | NULL    | auto_increment |
+| name    | varchar(40)      | NO   |     | NULL    |                |
+| age     | int(2)           | NO   |     | NULL    |                |
+| contact | int(10)          | YES  |     | NULL    |                |
++---------+------------------+------+-----+---------+----------------+
+
+create table Customers (  
+ 		id int unsigned not null auto_increment, 
+ 		name varchar(40) not null, 
+ 		age decimal(3,0) not null, 
+ 		contact  varchar(10), 
+ 		emp_id int unsigned not null,  
+ 		primary key (id), 
+ 		foreign key (emp_id) references Employees (id) 
+ 		);
+ 		
+ +---------+------------------+------+-----+---------+----------------+
+| Field   | Type             | Null | Key | Default | Extra          |
++---------+------------------+------+-----+---------+----------------+
+| id      | int(10) unsigned | NO   | PRI | NULL    | auto_increment |
+| name    | varchar(40)      | NO   |     | NULL    |                |
+| age     | int(2)           | NO   |     | NULL    |                |
+| contact | int(10)          | YES  |     | NULL    |                |
+| emp_id  | int(10) unsigned | NO   | MUL | NULL    |                |
++---------+------------------+------+-----+---------+----------------+
+
+create table vehicles ( 
+ 		id int unsigned not null auto_increment, 
+ 		type ENUM('Car', 'Bike', 'Bus'),
+ 		brand varchar(15), 
+ 		colour varchar(15), 
+ 		service_charge decimal(7,2) not null, 
+ 		primary key (id) 
+ 		);
+
+mysql> describe vehicles;
++----------------+--------------------------+------+-----+---------+----------------+
+| Field          | Type                     | Null | Key | Default | Extra          |
++----------------+--------------------------+------+-----+---------+----------------+
+| id             | int(10) unsigned         | NO   | PRI | NULL    | auto_increment |
+| type           | enum('Car','Bike','Bus') | YES  |     | NULL    |                |
+| brand          | varchar(15)              | YES  |     | NULL    |                |
+| colour         | varchar(15)              | YES  |     | NULL    |                |
+| service_charge | decimal(7,2)             | NO   |     | NULL    |                |
++----------------+--------------------------+------+-----+---------+----------------+
+
+show tables;
++---------------------------+
+| Tables_in_service_station |
++---------------------------+
+| Customers                 |
+| Employees                 |
+| SeriviceStation           |
+| vehicles                  |
++---------------------------+
+
+
+create table invoices (
+		id int unsigned not null auto_increment, 
+		name_of_owner varchar(40) not null, 
+		vehicle int unsigned not null, 
+		amount_total decimal(7,2) not null, 
+		employee_assigned int unsigned not null, 
+		primary key (id), 
+		foreign key (vehicle) references vehicles (id), 
+		foreign key (employee_assigned) references Employees (id) 
+		);
+		
+describe Invoices;
++-------------------+------------------+------+-----+---------+----------------+
+| Field             | Type             | Null | Key | Default | Extra          |
++-------------------+------------------+------+-----+---------+----------------+
+| id                | int(10) unsigned | NO   | PRI | NULL    | auto_increment |
+| name_of_owner     | varchar(40)      | NO   |     | NULL    |                |
+| vehicle           | int(10) unsigned | NO   | MUL | NULL    |                |
+| amount_total      | decimal(7,2)     | NO   |     | NULL    |                |
+| employee_assigned | int(10) unsigned | NO   | MUL | NULL    |                |
++-------------------+------------------+------+-----+---------+----------------+
+
+
+
+
