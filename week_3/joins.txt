@@ -69,7 +69,7 @@ GROUP BY students.id;
 +-----------+-------+-------+
 5 rows in set (0.00 sec)
 
-4.List the 9th and 10th grade students who received more than 3 medals.
+4.List the 9th and 10th grade students who received more than 3 medals. - (there are no 9th and 10th grade students in the medals database, -changed it to between 6th and 8th)
 Format: name, grade, no_of_medals
 
 SELECT students.name, grade, (COUNT(medal_recieved)) AS no_of_medals
@@ -83,24 +83,190 @@ Empty set (0.00 sec)
 5. List the students who got less than 2 medals. This should also include the students who has not won any medals.
 Format: name, grade, no_of_medals
 
-SELECT students.name, grade, (COUNT(medal_recieved)) AS no_of_medals
-FROM medals
-JOIN students ON medals.student_id = students.id
-WHERE grade IN (6,8)
+SELECT name, marks.grade, count(medal_won) AS no_of_medals
+FROM students 
+LEFT JOIN medals ON students.id = medals.student_id
+JOIN marks ON students.id = marks.student_id
 GROUP BY students.id
-HAVING no_of_medals < 3;
+having no_of_medals < 2;
++-----------+-------+--------------+
+| name      | grade | no_of_medals |
++-----------+-------+--------------+
+| Thor      |     6 |            0 |
+| Hulk      |     6 |            0 |
+| Daredevil |     6 |            0 |
+| X Man     |     6 |            0 |
+| Ironman   |     6 |            0 |
++-----------+-------+--------------+
+5 rows in set (0.00 sec)
 
-List the students who has not yet received any medals but scored more than 90 marks in all the subjects in the annual exam for that year.
+6. List the students who has not yet received any medals but scored more than 90 marks in all the subjects in the annual exam for that year.
 Format: name, year
 
-List the records from the medals table for the students who had won more than 3 medals.
+SELECT name, marks.year
+FROM students
+LEFT JOIN medals ON students.id = medals.student_id
+JOIN marks ON students.id = marks.student_id
+WHERE annual > 90
+GROUP BY students.id, subject_id
+HAVING COUNT(medal_won) = 0;
++-----------+------+
+| name      | year |
++-----------+------+
+| Thor      | 2003 |
+| Thor      | 2004 |
+| Hulk      | 2004 |
+| Hulk      | 2007 |
+| Hulk      | 2004 |
+| Hulk      | 2004 |
+| Daredevil | 2003 |
+| Daredevil | 2003 |
+| Daredevil | 2003 |
+| X Man     | 2005 |
+| X Man     | 2005 |
+| X Man     | 2004 |
+| Ironman   | 2003 |
+| Ironman   | 2007 |
+| Ironman   | 2003 |
+| Ironman   | 2006 |
++-----------+------+
+
+
+7. List the records from the medals table for the students who had won more than 3 medals.
 Format: name, game_id, medal_won, year, grade
 
-List the number of medals and percentage of marks(based on total for the 5 subjects) scored in each year.
+SELECT students.name, medals.game_id, medals.medal_recieved AS medal_won, medals.year, medals.grade
+FROM medals
+JOIN students ON medals.student_id = students.id
+GROUP BY student_id
+HAVING COUNT(medals.medal_recieved) > 3;
++-----------+---------+-----------+------+-------+
+| name      | game_id | medal_won | year | grade |
++-----------+---------+-----------+------+-------+
+| Thor      |       5 | silver    | 2003 |     6 |
+| Hulk      |       4 | silver    | 2003 |     6 |
+| Daredevil |       5 | gold      | 2003 |     6 |
++-----------+---------+-----------+------+-------+
+
+8.List the number of medals and percentage of marks(based on total for the 5 subjects) scored in each year.
 Format: name, medals, quarterly_per, half_yearly_per, annual_per, year, grade
 
-Lets assign some rating for the total marks scored - S(450-500), A(400-449), B(350-399), C(300-349), D(250,299), E(200-249), F(below 200). List the students with the grade obtained in each year for each exam(quarterly, half-yearly and annual)
+SELECT students.name, (COUNT(medals.medal_reciEved)) AS medals,AVG(marks.quarterly) AS quarterly_per, AVG(marks.half_yearly) AS half_yearly_per , AVG(marks.annual) AS annual_per, marks.year, marks.grade, subject_id
+FROM students
+LEFT JOIN marks on students.id= marks.student_id
+LEFT JOIN medals on students.id= medals.student_id and marks.year= medals.year
+WHERE subject_id = '1'
+GROUP BY students.id, marks.year;
++-----------+--------+---------------+-----------------+------------+------+-------+
+| name      | medals | quarterly_per | half_yearly_per | annual_per | year | grade |
++-----------+--------+---------------+-----------------+------------+------+-------+
+| Thor      |      1 |        0.0000 |         79.0000 |    91.0000 | 2003 |     6 |
+| Thor      |      0 |       59.0000 |         34.0000 |    57.0000 | 2004 |     7 |
+| Thor      |      3 |       96.0000 |         57.0000 |    94.0000 | 2005 |     8 |
+| Thor      |      0 |       67.0000 |         84.0000 |    51.0000 | 2006 |     9 |
+| Thor      |      0 |        0.0000 |          0.0000 |     0.0000 | 2007 |    10 |
+| Hulk      |      1 |       35.0000 |         49.0000 |    77.0000 | 2003 |     6 |
+| Hulk      |      3 |       47.0000 |         37.0000 |    94.0000 | 2004 |     7 |
+| Hulk      |      0 |       68.0000 |         41.0000 |    50.0000 | 2005 |     8 |
+| Hulk      |      0 |       63.0000 |         68.0000 |    46.0000 | 2006 |     9 |
+| Hulk      |      0 |       93.0000 |         31.0000 |    79.0000 | 2007 |    10 |
+| Daredevil |      2 |      100.0000 |         97.0000 |    95.0000 | 2003 |     6 |
+| Daredevil |      2 |       47.0000 |         80.0000 |    97.0000 | 2004 |     7 |
+| Daredevil |      1 |       60.0000 |         83.0000 |    73.0000 | 2005 |     8 |
+| Daredevil |      0 |       89.0000 |         96.0000 |    31.0000 | 2006 |     9 |
+| Daredevil |      0 |       81.0000 |         92.0000 |    69.0000 | 2007 |    10 |
+| X Man     |      0 |       38.0000 |         38.0000 |    65.0000 | 2003 |     6 |
+| X Man     |      0 |       89.0000 |         43.0000 |    68.0000 | 2004 |     7 |
+| X Man     |      0 |       53.0000 |         81.0000 |    97.0000 | 2005 |     8 |
+| X Man     |      0 |       86.0000 |         74.0000 |    82.0000 | 2006 |     9 |
+| X Man     |      0 |       32.0000 |         31.0000 |    76.0000 | 2007 |    10 |
+| Ironman   |      0 |       73.0000 |         40.0000 |   100.0000 | 2003 |     6 |
+| Ironman   |      0 |       72.0000 |         82.0000 |    47.0000 | 2004 |     7 |
+| Ironman   |      0 |       64.0000 |         81.0000 |    39.0000 | 2005 |     8 |
+| Ironman   |      0 |       91.0000 |         49.0000 |    70.0000 | 2006 |     9 |
+| Ironman   |      0 |       82.0000 |         65.0000 |    87.0000 | 2007 |    10 |
++-----------+--------+---------------+-----------------+------------+------+-------+
+25 rows in set (0.01 sec)
+
+9. Lets assign some rating for the total marks scored - S(450-500), A(400-449), B(350-399), C(300-349), D(250,299), E(200-249), F(below 200). List the students with the grade obtained in each year for each exam(quarterly, half-yearly and annual)
 Format: name, quarterly_rating, half_yearly_rating, annual_rating, year, grade
 
+delimiter $$
+CREATE FUNCTION getRating (mark int)
+RETURNS char(1)
+BEGIN
+DECLARE markRate char(1);
+IF mark >= 450 AND mark <= 500 THEN
+SET markRate= 'S';
+ELSEIF mark >=400 AND mark< 450 THEN
+SET markRate= 'A';
+ELSEIF mark >=350 AND mark< 400 THEN
+SET markRate= 'B';
+ELSEIF mark >=300 AND mark< 350 THEN
+SET markRate= 'C';
+ELSEIF mark >=250 AND mark< 300 THEN
+SET markRate= 'D';
+ELSEIF mark >=200 AND mark< 250 THEN
+SET markRate= 'E';
+ELSE
+SET markRate= 'F';
+END if;
+RETURN markRate;
+end $$
+
+delimiter ;
+
+show function status;
++-----------------+-----------+----------+----------------+---------------------+---------------------+---------------+---------+----------------------+----------------------+--------------------+
+| Db              | Name      | Type     | Definer        | Modified            | Created             | Security_type | Comment | character_set_client | collation_connection | Database Collation |
++-----------------+-----------+----------+----------------+---------------------+---------------------+---------------+---------+----------------------+----------------------+--------------------+
+| training_sample | getRating | FUNCTION | root@localhost | 2015-08-26 18:53:56 | 2015-08-26 18:53:56 | DEFINER       |         | utf8                 | utf8_general_ci      | latin1_swedish_ci  |
++-----------------+-----------+----------+----------------+---------------------+---------------------+---------------+---------+----------------------+----------------------+--------------------+
+1 row in set (0.00 sec)
 
 
+SELECT name, year, grade, 
+getRating(sum(quarterly)) as quarterly_rating, 
+getRating(sum(half_yearly)) as half_yearly_rating,
+getRating(sum(annual)) as annual_rating 
+FROM marks 
+JOIN students ON marks.student_id=students.id
+GROUP BY year, student_id
+ORDER BY year, name;
+
++-----------+------+-------+------------------+--------------------+---------------+
+| name      | year | grade | quarterly_rating | half_yearly_rating | annual_rating |
++-----------+------+-------+------------------+--------------------+---------------+
+| Daredevil | 2003 |     6 | A                | B                  | S             |
+| Hulk      | 2003 |     6 | E                | D                  | D             |
+| Ironman   | 2003 |     6 | D                | D                  | C             |
+| Thor      | 2003 |     6 | F                | E                  | A             |
+| X Man     | 2003 |     6 | C                | C                  | D             |
+| Daredevil | 2004 |     7 | C                | C                  | C             |
+| Hulk      | 2004 |     7 | C                | D                  | S             |
+| Ironman   | 2004 |     7 | D                | D                  | D             |
+| Thor      | 2004 |     7 | E                | D                  | C             |
+| X Man     | 2004 |     7 | B                | C                  | C             |
+| Daredevil | 2005 |     8 | C                | E                  | B             |
+| Hulk      | 2005 |     8 | C                | D                  | D             |
+| Ironman   | 2005 |     8 | D                | B                  | D             |
+| Thor      | 2005 |     8 | C                | B                  | B             |
+| X Man     | 2005 |     8 | B                | C                  | C             |
+| Daredevil | 2006 |     9 | A                | A                  | C             |
+| Hulk      | 2006 |     9 | B                | E                  | E             |
+| Ironman   | 2006 |     9 | A                | C                  | C             |
+| Thor      | 2006 |     9 | D                | C                  | D             |
+| X Man     | 2006 |     9 | B                | B                  | D             |
+| Daredevil | 2007 |    10 | B                | B                  | C             |
+| Hulk      | 2007 |    10 | C                | D                  | A             |
+| Ironman   | 2007 |    10 | B                | B                  | A             |
+| Thor      | 2007 |    10 | C                | D                  | E             |
+| X Man     | 2007 |    10 | D                | E                  | B             |
++-----------+------+-------+------------------+--------------------+---------------+
+25 rows in set (0.01 sec)
+
+
+
+
+
+ 
