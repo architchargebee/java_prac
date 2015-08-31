@@ -89,6 +89,10 @@ LEFT JOIN medals ON students.id = medals.student_id
 JOIN marks ON students.id = marks.student_id
 GROUP BY students.id
 having no_of_medals < 2;
+
+
+
+
 +-----------+-------+--------------+
 | name      | grade | no_of_medals |
 +-----------+-------+--------------+
@@ -265,6 +269,14 @@ ORDER BY year, name;
 +-----------+------+-------+------------------+--------------------+---------------+
 25 rows in set (0.01 sec)
 
+
+SELECT name, quarterly, half_yearly, annual,marks.grade, count(medal_won) AS no_of_medals, marks.year
+FROM students 
+JOIN medals ON students.id = medals.student_id
+JOIN marks ON students.id = marks.student_id AND s
+WHERE half_yearly = 0
+GROUP BY students.id, marks.year
+having no_of_medals > 3;
 
 
 

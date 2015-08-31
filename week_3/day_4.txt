@@ -375,6 +375,15 @@ DROP medal_won;
 
 
 
+SELECT students.id, name, marks.year,annual,quarterly,half_yearly count(medal_won)  
+FROM (students LEFT JOIN marks ON students.id= marks.student_id)
+LEFT JOIN medals ON students.id= medals.student_id AND marks.year= medals.year
+WHERE subject_id=1
+GROUP BY students.id, marks.year;
+
+
+
+
 
 
 
