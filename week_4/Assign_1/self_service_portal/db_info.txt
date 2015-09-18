@@ -1,0 +1,17 @@
+create table user_login (
+    -> id int unsigned not null AUTO_INCREMENT,
+    -> email varchar(50) not null,
+    -> password varchar(50) not null,
+    -> primary key(id));
+Query OK, 0 rows affected (0.34 sec)
+
+desc user_login;
++----------+------------------+------+-----+---------+----------------+
+| Field    | Type             | Null | Key | Default | Extra          |
++----------+------------------+------+-----+---------+----------------+
+| id       | int(10) unsigned | NO   | PRI | NULL    | auto_increment |
+| email    | varchar(50)      | NO   |     | NULL    |                |
+| password | varchar(50)      | NO   |     | NULL    |                |
++----------+------------------+------+-----+---------+----------------+
+3 rows in set (0.00 sec)
+
